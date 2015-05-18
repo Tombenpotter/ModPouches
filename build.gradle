@@ -42,7 +42,7 @@ minecraft {
     runDir = "run"
 
 	replace "@VERSION@", project.version
-    replaceIn "ModInformation.java"
+    replaceIn "ModPouches.java"
 	
     if (project.hasProperty('mappings_version'))
         mappings = project.mappings_version
