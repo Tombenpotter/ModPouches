@@ -12,4 +12,4 @@ You might notice that the pouch is, by default, gray. You can change that! Simpl
 The output will be a pouch, with the color corresponding to the Hex Code provided by the Name Tag. Any item present in the Pouch before the coloring will be preserved.
 
 # License
-ModPouches by Tombenpotter is licensed under a Creative Commons Attribution 4.0 International License.
+Mod Pouches by Tombenpotter is licensed under a Creative Commons Attribution 4.0 International License.

@@ -1,2 +1,3 @@
-item.ModPouches.mod.pouch.name=Pouch
+item.ModPouches.mod.pouch.0.name=Pouch
+item.ModPouches.mod.pouch.1.name=Crafting Pouch
 itemGroup.tabModPouches=Mod Pouches

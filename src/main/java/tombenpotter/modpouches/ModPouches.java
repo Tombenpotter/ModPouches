@@ -18,8 +18,9 @@ import net.minecraftforge.common.MinecraftForge;
 import tombenpotter.modpouches.gui.GuiHandler;
 import tombenpotter.modpouches.items.ItemModPouch;
 import tombenpotter.modpouches.proxies.CommonProxy;
-import tombenpotter.modpouches.util.AnvilHandler;
 import tombenpotter.modpouches.util.ConfigHandler;
+import tombenpotter.modpouches.util.CopyNBTRecipe;
+import tombenpotter.modpouches.util.EventHandler;
 import tombenpotter.modpouches.util.RandomUtils;
 
 import java.util.HashMap;
@@ -66,11 +67,16 @@ public class ModPouches {
         itemModPouch = new ItemModPouch();
         GameRegistry.registerItem(itemModPouch, "ItemModPouch");
 
-        GameRegistry.addShapedRecipe(new ItemStack(itemModPouch), "SSS", "LCL", "LCL", 'S', Items.string, 'C', Blocks.chest, 'L', Items.leather);
-        GameRegistry.addShapelessRecipe(new ItemStack(itemModPouch), new ItemStack(itemModPouch));
+        GameRegistry.addShapedRecipe(new ItemStack(itemModPouch, 1, 0), "SSS", "LCL", "LCL", 'S', Items.string, 'C', Blocks.chest, 'L', Items.leather);
+        GameRegistry.addShapelessRecipe(new ItemStack(itemModPouch, 1, 0), new ItemStack(itemModPouch, 1, 0));
 
-        MinecraftForge.EVENT_BUS.register(new AnvilHandler());
-        FMLCommonHandler.instance().bus().register(new AnvilHandler());
+        GameRegistry.addRecipe(new CopyNBTRecipe(new ItemStack(itemModPouch, 1, 1), "CCC", "CPC", "CCC", 'C', Blocks.crafting_table, 'P', new ItemStack(itemModPouch, 1, 0)));
+        GameRegistry.addShapelessRecipe(new ItemStack(itemModPouch, 1, 1), new ItemStack(itemModPouch, 1, 1));
+
+        GameRegistry.addRecipe(new CopyNBTRecipe(new ItemStack(itemModPouch, 1, 0), "LLL", "LPL", "LLL", 'L', Items.leather, 'P', new ItemStack(itemModPouch, 1, 1)));
+
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        FMLCommonHandler.instance().bus().register(new EventHandler());
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
     }
 

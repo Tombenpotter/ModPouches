@@ -19,6 +19,9 @@ public class RandomUtils {
     public static int POUCH_GUI = 0;
     public static int POUCH_SLOTS = 54;
 
+    public static int CRAFTING_POUCH_GUI = 1;
+    public static int CRAFTING_POUCH_SLOTS = 27;
+
     public static EntityItem dropItemStackInWorld(World world, double x, double y, double z, ItemStack stack) {
         if (!world.isRemote) {
             float f = 0.7F;

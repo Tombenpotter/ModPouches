@@ -27,6 +27,11 @@ public class ItemModPouch extends Item {
         setUnlocalizedName(ModPouches.modid + ".mod.pouch");
     }
 
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return super.getUnlocalizedName(stack) + "." + String.valueOf(stack.getItemDamage());
+    }
+
     public static String getMod(ItemStack stack) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(RandomUtils.MOD_TAG))
             return stack.stackTagCompound.getString(RandomUtils.MOD_TAG);
@@ -78,13 +83,22 @@ public class ItemModPouch extends Item {
     @Override
     public void getSubItems(Item item, CreativeTabs tabs, List list) {
         list.add(new ItemStack(this, 1, 0));
+        list.add(new ItemStack(this, 1, 1));
+
         for (String mod : ModPouches.loadedModNames) {
-            ItemStack stack = new ItemStack(this, 1, 0);
-            stack.setTagCompound(new NBTTagCompound());
-            setMod(stack, mod);
+            ItemStack pouch = new ItemStack(this, 1, 0);
+            pouch.setTagCompound(new NBTTagCompound());
+            setMod(pouch, mod);
             random.setSeed(mod.hashCode() | 0xFF000000);
-            setColor(stack, random.nextInt());
-            list.add(stack);
+            setColor(pouch, random.nextInt());
+            list.add(pouch);
+
+            ItemStack craftingPouch = new ItemStack(this, 1, 1);
+            craftingPouch.setTagCompound(new NBTTagCompound());
+            setMod(craftingPouch, mod);
+            random.setSeed(mod.hashCode() | 0xFF000000);
+            setColor(craftingPouch, random.nextInt());
+            list.add(craftingPouch);
         }
     }
 
@@ -102,8 +116,12 @@ public class ItemModPouch extends Item {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
-        if (stack.stackTagCompound.hasKey(RandomUtils.MOD_TAG))
-            player.openGui(ModPouches.instance, RandomUtils.POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        if (stack.stackTagCompound.hasKey(RandomUtils.MOD_TAG)) {
+            if (stack.getItemDamage() == 0)
+                player.openGui(ModPouches.instance, RandomUtils.POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+            else if (stack.getItemDamage() == 1)
+                player.openGui(ModPouches.instance, RandomUtils.CRAFTING_POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
         return stack;
     }
 

@@ -11,7 +11,7 @@ import tombenpotter.modpouches.items.ItemModPouch;
 import java.awt.*;
 import java.util.Random;
 
-public class AnvilHandler {
+public class EventHandler {
 
     private Random random = new Random();
 
