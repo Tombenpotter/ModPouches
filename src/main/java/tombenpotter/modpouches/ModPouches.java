@@ -1,5 +1,6 @@
 package tombenpotter.modpouches;
 
+import com.google.common.collect.HashMultimap;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -8,7 +9,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,9 +22,9 @@ import tombenpotter.modpouches.util.AnvilHandler;
 import tombenpotter.modpouches.util.ConfigHandler;
 import tombenpotter.modpouches.util.RandomUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Mod(modid = ModPouches.modid, name = ModPouches.name, version = ModPouches.version)
 public class ModPouches {
@@ -37,9 +37,9 @@ public class ModPouches {
     public static final String channel = "ModPouches";
     public static final String version = "@VERSION@";
 
-    public static List<String> loadedModNames = new ArrayList<String>();
+    public static Set<String> loadedModNames = new HashSet<String>();
     public static HashMap<String, String> modIDsForNames = new HashMap<String, String>();
-    public static HashMap<String, List<String>> modDependencies = new HashMap<String, List<String>>();
+    public static HashMultimap<String, String> modDependencies = HashMultimap.create();
     public static ItemModPouch itemModPouch;
     public static final CreativeTabs pouchTab = new CreativeTabs("tab" + modid) {
         @Override
@@ -66,8 +66,7 @@ public class ModPouches {
         itemModPouch = new ItemModPouch();
         GameRegistry.registerItem(itemModPouch, "ItemModPouch");
 
-        GameRegistry.addShapedRecipe(new ItemStack(Blocks.web), "S S", " S ", "S S", 'S', Items.string);
-        GameRegistry.addShapedRecipe(new ItemStack(itemModPouch), "WSW", "LCL", "LCL", 'S', Items.string, 'C', Blocks.chest, 'L', Items.leather, 'W', Blocks.web);
+        GameRegistry.addShapedRecipe(new ItemStack(itemModPouch), "SSS", "LCL", "LCL", 'S', Items.string, 'C', Blocks.chest, 'L', Items.leather);
         GameRegistry.addShapelessRecipe(new ItemStack(itemModPouch), new ItemStack(itemModPouch));
 
         MinecraftForge.EVENT_BUS.register(new AnvilHandler());
@@ -86,14 +85,7 @@ public class ModPouches {
 
         for (Item item : GameData.getItemRegistry().typeSafeIterable()) {
             String mod = RandomUtils.getModForItem(item);
-            if (!loadedModNames.contains(mod))
-                loadedModNames.add(mod);
-        }
-
-        for (Block block : GameData.getBlockRegistry().typeSafeIterable()) {
-            String mod = RandomUtils.getModForItem(block);
-            if (!loadedModNames.contains(mod))
-                loadedModNames.add(mod);
+            loadedModNames.add(mod);
         }
 
         for (String mod : ConfigHandler.modBlacklist) {
@@ -103,11 +95,9 @@ public class ModPouches {
         for (ModContainer modContainer : Loader.instance().getActiveModList()) {
             String name = modContainer.getName();
             if (loadedModNames.contains(name)) {
-                ArrayList<String> deps = new ArrayList<String>();
                 for (ArtifactVersion artifactVersion : modContainer.getRequirements()) {
-                    deps.add(artifactVersion.getLabel());
+                    modDependencies.put(name, artifactVersion.getLabel());
                 }
-                modDependencies.put(name, deps);
                 modIDsForNames.put(name, modContainer.getModId());
             }
         }

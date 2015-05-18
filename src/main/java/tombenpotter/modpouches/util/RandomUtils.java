@@ -36,34 +36,34 @@ public class RandomUtils {
         return null;
     }
 
-    public static String getModForItem(ItemStack stack) {
+    public static String getModForItem(Item item) {
         try {
-            ModContainer mod = GameData.findModOwner(GameData.getItemRegistry().getNameForObject(stack.getItem()));
+            ModContainer mod = GameData.findModOwner(GameData.getItemRegistry().getNameForObject(item));
             return mod == null ? "Minecraft" : mod.getName();
         } catch (NullPointerException ignored) {
         }
         return "Minecraft";
     }
 
-    public static String getModForItem(Item item) {
-        return getModForItem(new ItemStack(item));
+    public static String getModForItem(ItemStack stack) {
+        return getModForItem(stack.getItem());
     }
 
     public static String getModForItem(Block block) {
         return getModForItem(new ItemStack(block));
     }
 
-    public static String getModIDForItem(ItemStack stack) {
+    public static String getModIDForItem(Item item) {
         try {
-            ModContainer mod = GameData.findModOwner(GameData.getItemRegistry().getNameForObject(stack.getItem()));
+            ModContainer mod = GameData.findModOwner(GameData.getItemRegistry().getNameForObject(item));
             return mod == null ? "Minecraft" : mod.getModId();
         } catch (NullPointerException ignored) {
         }
         return "Minecraft";
     }
 
-    public static String getModIDForItem(Item item) {
-        return getModIDForItem(new ItemStack(item));
+    public static String getModIDForItem(ItemStack stack) {
+        return getModIDForItem(stack.getItem());
     }
 
     public static String getModIDForItem(Block block) {

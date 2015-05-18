@@ -14,10 +14,12 @@ import tombenpotter.modpouches.ModPouches;
 import tombenpotter.modpouches.util.RandomUtils;
 
 import java.util.List;
+import java.util.Random;
 
 public class ItemModPouch extends Item {
 
     public IIcon overlay;
+    private Random random = new Random();
 
     public ItemModPouch() {
         setCreativeTab(ModPouches.pouchTab);
@@ -76,11 +78,12 @@ public class ItemModPouch extends Item {
     @Override
     public void getSubItems(Item item, CreativeTabs tabs, List list) {
         list.add(new ItemStack(this, 1, 0));
-        for (int i = 0; i < ModPouches.loadedModNames.size(); i++) {
-            String mod = ModPouches.loadedModNames.get(i);
+        for (String mod : ModPouches.loadedModNames) {
             ItemStack stack = new ItemStack(this, 1, 0);
             stack.setTagCompound(new NBTTagCompound());
-            stack.stackTagCompound.setString(RandomUtils.MOD_TAG, mod);
+            setMod(stack, mod);
+            random.setSeed(mod.hashCode() | 0xFF000000);
+            setColor(stack, random.nextInt());
             list.add(stack);
         }
     }

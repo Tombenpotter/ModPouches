@@ -9,8 +9,11 @@ import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import tombenpotter.modpouches.items.ItemModPouch;
 
 import java.awt.*;
+import java.util.Random;
 
 public class AnvilHandler {
+
+    private Random random = new Random();
 
     @SubscribeEvent
     public void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -49,6 +52,10 @@ public class AnvilHandler {
                 output.setTagCompound(new NBTTagCompound());
 
             ItemModPouch.setMod(output, mod);
+
+            random.setSeed(mod.hashCode() | 0xFF000000);
+            ItemModPouch.setColor(output, random.nextInt());
+
             event.output = output;
             event.cost = 1;
         }
