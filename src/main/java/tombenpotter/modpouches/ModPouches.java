@@ -53,6 +53,7 @@ public class ModPouches {
             return itemModPouch;
         }
     };
+
     @SidedProxy(clientSide = clientProxy, serverSide = commonProxy)
     public static CommonProxy proxy;
     @Mod.Instance(ModPouches.modid)
