@@ -1,11 +1,16 @@
 package tombenpotter.modpouches.util;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemNameTag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
+import tombenpotter.modpouches.ModPouches;
+import tombenpotter.modpouches.gui.PouchInventory;
 import tombenpotter.modpouches.items.ItemModPouch;
 
 import java.awt.*;
@@ -76,6 +81,24 @@ public class EventHandler {
         if (left.getItem() instanceof ItemModPouch) {
             if (!event.entityPlayer.inventory.addItemStackToInventory(right.copy())) {
                 RandomUtils.dropItemStackInWorld(event.entityPlayer.worldObj, event.entityPlayer.posX, event.entityPlayer.posY, event.entityPlayer.posZ, right.copy());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPouchCraft(PlayerEvent.ItemCraftedEvent event) {
+        for (int i = 0; i < 9; i++) {
+            if (i == 4 && (event.craftMatrix.getStackInSlot(i) == null || event.craftMatrix.getStackInSlot(i).getItem() != ModPouches.itemModPouch)) {
+                return;
+            } else if (i != 4 && (event.craftMatrix.getStackInSlot(i) == null || event.craftMatrix.getStackInSlot(i).getItem() != Item.getItemFromBlock(Blocks.crafting_table))) {
+                return;
+            }
+        }
+
+        if (!event.player.worldObj.isRemote) {
+            PouchInventory pouchInventory = new PouchInventory(RandomUtils.POUCH_SLOTS, event.player, event.craftMatrix.getStackInSlot(4));
+            for (int i = 0; i < pouchInventory.getSizeInventory(); i++) {
+                event.player.dropPlayerItemWithRandomChoice(pouchInventory.getStackInSlot(i), false);
             }
         }
     }

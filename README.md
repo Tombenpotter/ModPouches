@@ -14,7 +14,7 @@ For 1 more level of experience, the output will be a pouch, with the color corre
 Any item present in the Pouch before the coloring will be preserved.
 
 To upgrade from a Pouch to a Crafting Pouch, just surround a regular Pouch with 8 Crafting Tables in a crafting grid.
-However, be careful! All settings will be preserved when you upgrade, but the last 3 rows of the Pouch will be wiped, as they don't exist in the Crafting Pouch.
+All settings will be preserved when you upgrade, but the last 3 rows of the Pouch will be dropped on the floor, as they don't exist in the Crafting Pouch.
 
 If for some reason you want to get a regular Pouch back from a Crafting Pouch, simply surround it  with 8 pieces of leather in a crafting grid.
 All items will be preserved.
