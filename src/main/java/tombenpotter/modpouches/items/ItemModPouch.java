@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import tombenpotter.modpouches.ModPouches;
 import tombenpotter.modpouches.util.RandomUtils;
@@ -25,11 +26,6 @@ public class ItemModPouch extends Item {
         setCreativeTab(ModPouches.pouchTab);
         setMaxStackSize(1);
         setUnlocalizedName(ModPouches.modid + ".mod.pouch");
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "." + String.valueOf(stack.getItemDamage());
     }
 
     public static String getMod(ItemStack stack) {
@@ -52,6 +48,20 @@ public class ItemModPouch extends Item {
 
     public static void setColor(ItemStack stack, int color) {
         stack.stackTagCompound.setInteger(RandomUtils.COLOR_TAG, color);
+    }
+
+    public static void setPickupActivated(ItemStack stack, boolean isActivated) {
+        if (stack.hasTagCompound())
+            stack.stackTagCompound.setBoolean(RandomUtils.PICKUP_TAG, isActivated);
+    }
+
+    public static boolean getPickupActivated(ItemStack stack) {
+        return stack.hasTagCompound() && stack.stackTagCompound.getBoolean(RandomUtils.PICKUP_TAG);
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return super.getUnlocalizedName(stack) + "." + String.valueOf(stack.getItemDamage());
     }
 
     @Override
@@ -116,11 +126,19 @@ public class ItemModPouch extends Item {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
+
+        if (player.isSneaking()) {
+            setPickupActivated(stack, !getPickupActivated(stack));
+            return stack;
+        }
+
         if (stack.stackTagCompound.hasKey(RandomUtils.MOD_TAG)) {
             if (stack.getItemDamage() == 0)
                 player.openGui(ModPouches.instance, RandomUtils.POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
             else if (stack.getItemDamage() == 1)
                 player.openGui(ModPouches.instance, RandomUtils.CRAFTING_POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+
+            return stack;
         }
         return stack;
     }
@@ -129,5 +147,10 @@ public class ItemModPouch extends Item {
     public int getColorFromItemStack(ItemStack stack, int pass) {
         if (pass == 0) return getColor(stack);
         else return super.getColorFromItemStack(stack, pass);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+        list.add(StatCollector.translateToLocal("text.ModPouches.pickup") + ": " + getPickupActivated(stack));
     }
 }

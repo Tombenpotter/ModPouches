@@ -1,5 +1,6 @@
 package tombenpotter.modpouches.util;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.init.Blocks;
@@ -9,7 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import tombenpotter.modpouches.ModPouches;
+import tombenpotter.modpouches.gui.CraftingPouchContainer;
+import tombenpotter.modpouches.gui.PouchContainer;
 import tombenpotter.modpouches.gui.PouchInventory;
 import tombenpotter.modpouches.items.ItemModPouch;
 
@@ -99,6 +103,32 @@ public class EventHandler {
             PouchInventory pouchInventory = new PouchInventory(RandomUtils.POUCH_SLOTS, event.player, event.craftMatrix.getStackInSlot(4));
             for (int i = 0; i < pouchInventory.getSizeInventory(); i++) {
                 event.player.dropPlayerItemWithRandomChoice(pouchInventory.getStackInSlot(i), false);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerPickup(EntityItemPickupEvent event) {
+        ItemStack pickedUp = event.item.getEntityItem();
+        if (pickedUp == null || pickedUp.stackSize <= 0)
+            return;
+
+        if (event.entityPlayer.openContainer instanceof PouchContainer || event.entityPlayer.openContainer instanceof CraftingPouchContainer)
+            return;
+
+        for (ItemStack stack : event.entityPlayer.inventory.mainInventory) {
+            if (stack == null || stack.stackSize <= 0)
+                continue;
+
+            if (!(stack.getItem() instanceof ItemModPouch))
+                continue;
+
+            if (!stack.hasTagCompound() || !ItemModPouch.getPickupActivated(stack))
+                continue;
+
+            if (RandomUtils.placeItemStackInPouch(pickedUp, stack, event.entityPlayer)) {
+                event.setResult(Event.Result.ALLOW);
+                return;
             }
         }
     }
