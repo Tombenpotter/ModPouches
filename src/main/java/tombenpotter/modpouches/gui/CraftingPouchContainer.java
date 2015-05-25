@@ -66,7 +66,16 @@ public class CraftingPouchContainer extends Container {
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-            if (slotNumber < this.numRows * 9) {
+            //Crafting Output slot
+            if (slotNumber == 36) {
+                if (!pouchInventory.isItemValidForSlot(slotNumber, itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true)) {
+                        return null;
+                    }
+                } else if (!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false)) {
+                    return null;
+                }
+            } else if (slotNumber < this.numRows * 9) {
                 if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true)) {
                     return null;
                 }

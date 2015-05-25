@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -151,6 +152,6 @@ public class ItemModPouch extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
-        list.add(StatCollector.translateToLocal("text.ModPouches.pickup") + ": " + getPickupActivated(stack));
+        list.add(StatCollector.translateToLocal("text.ModPouches.pickup") + ": " + EnumChatFormatting.YELLOW + getPickupActivated(stack));
     }
 }
