@@ -19,5 +19,7 @@ All settings will be preserved when you upgrade, but the last 3 rows of the Pouc
 If for some reason you want to get a regular Pouch back from a Crafting Pouch, simply surround it  with 8 pieces of leather in a crafting grid.
 All items will be preserved.
 
+The different Pouches have the ability to place the items you've picked up inside of their inventory automatically. To enable this, simply shift-right click with the Pouch in your hand.
+
 # License
 Mod Pouches by Tombenpotter is licensed under a Creative Commons Attribution 4.0 International License.
