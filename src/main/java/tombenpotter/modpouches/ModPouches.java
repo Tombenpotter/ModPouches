@@ -23,9 +23,7 @@ import tombenpotter.modpouches.util.CopyNBTRecipe;
 import tombenpotter.modpouches.util.EventHandler;
 import tombenpotter.modpouches.util.RandomUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Mod(modid = ModPouches.modid, name = ModPouches.name, version = ModPouches.version)
 public class ModPouches {
@@ -91,8 +89,13 @@ public class ModPouches {
         proxy.postLoad();
 
         for (Item item : GameData.getItemRegistry().typeSafeIterable()) {
-            String mod = RandomUtils.getModForItem(item);
-            loadedModNames.add(mod);
+            List list = new ArrayList();
+            item.getSubItems(item, item.getCreativeTab(), list);
+
+            if (!list.isEmpty()) {
+                String mod = RandomUtils.getModForItem(item);
+                loadedModNames.add(mod);
+            }
         }
 
         for (String mod : ConfigHandler.modBlacklist) {
