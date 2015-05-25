@@ -31,10 +31,18 @@ def gitHash = 'unknown'
 //}
 
 repositories {
+	maven {
+        name 'CB Repo'
+        url "http://chickenbones.net/maven/"
+    }
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: '*.jar')
+	compile "codechicken:CodeChickenCore:${mc_version}-${ccc_version}:dev"
+	compile "codechicken:CodeChickenLib:${mc_version}-${ccl_version}:dev"
+	compile "codechicken:NotEnoughItems:${mc_version}-${nei_version}:dev"
+	
+	compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 minecraft {
