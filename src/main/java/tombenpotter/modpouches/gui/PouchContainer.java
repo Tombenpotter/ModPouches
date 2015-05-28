@@ -11,10 +11,12 @@ public class PouchContainer extends Container {
     public PouchInventory pouchInventory;
     public InventoryPlayer inventoryPlayer;
     public int numRows;
+    int pouchSlot;
 
     public PouchContainer(InventoryPlayer inventoryPlayer, PouchInventory pouchInventory) {
         this.inventoryPlayer = inventoryPlayer;
         this.pouchInventory = pouchInventory;
+        this.pouchSlot = inventoryPlayer.currentItem;
 
         this.numRows = pouchInventory.getSizeInventory() / 9;
         int i = (this.numRows - 4) * 18;
@@ -71,16 +73,19 @@ public class PouchContainer extends Container {
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
-        super.onContainerClosed(player);
         pouchInventory.saveContents();
-        player.inventory.setInventorySlotContents(player.inventory.currentItem, pouchInventory.pouchStack);
+        player.inventory.setInventorySlotContents(inventoryPlayer.currentItem, pouchInventory.pouchStack);
+
+        super.onContainerClosed(player);
     }
 
     @Override
-    public ItemStack slotClick(int slot, int button, int flag, EntityPlayer player) {
-        if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack() == player.getHeldItem()) {
+    public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
+        int clickedSlot = par1 - pouchInventory.getSizeInventory() - 27;
+
+        if (clickedSlot == pouchSlot || (par3 == 2 && par2 == pouchSlot))
             return null;
-        }
-        return super.slotClick(slot, button, flag, player);
+
+        return super.slotClick(par1, par2, par3, par4EntityPlayer);
     }
 }

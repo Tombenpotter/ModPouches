@@ -101,9 +101,11 @@ public class EventHandler {
 
         if (!event.player.worldObj.isRemote) {
             PouchInventory pouchInventory = new PouchInventory(RandomUtils.POUCH_SLOTS, event.player, event.craftMatrix.getStackInSlot(4));
-            for (int i = 0; i < pouchInventory.getSizeInventory(); i++) {
+            for (int i = 27; i < pouchInventory.getSizeInventory(); i++) {
                 event.player.dropPlayerItemWithRandomChoice(pouchInventory.getStackInSlot(i), false);
+                pouchInventory.setInventorySlotContents(i, null);
             }
+            pouchInventory.writeToNBT(event.crafting.stackTagCompound);
         }
     }
 

@@ -95,22 +95,6 @@ public class ItemModPouch extends Item {
     public void getSubItems(Item item, CreativeTabs tabs, List list) {
         list.add(new ItemStack(this, 1, 0));
         list.add(new ItemStack(this, 1, 1));
-
-        for (String mod : ModPouches.loadedModNames) {
-            ItemStack pouch = new ItemStack(this, 1, 0);
-            pouch.setTagCompound(new NBTTagCompound());
-            setMod(pouch, mod);
-            random.setSeed(mod.hashCode() | 0xFF000000);
-            setColor(pouch, random.nextInt());
-            list.add(pouch);
-
-            ItemStack craftingPouch = new ItemStack(this, 1, 1);
-            craftingPouch.setTagCompound(new NBTTagCompound());
-            setMod(craftingPouch, mod);
-            random.setSeed(mod.hashCode() | 0xFF000000);
-            setColor(craftingPouch, random.nextInt());
-            list.add(craftingPouch);
-        }
     }
 
     @Override
@@ -146,8 +130,10 @@ public class ItemModPouch extends Item {
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        if (pass == 0) return getColor(stack);
-        else return super.getColorFromItemStack(stack, pass);
+        if (pass == 0)
+            return getColor(stack);
+        else
+            return super.getColorFromItemStack(stack, pass);
     }
 
     @Override

@@ -21,7 +21,6 @@ import tombenpotter.modpouches.proxies.CommonProxy;
 import tombenpotter.modpouches.util.ConfigHandler;
 import tombenpotter.modpouches.util.CopyNBTRecipe;
 import tombenpotter.modpouches.util.EventHandler;
-import tombenpotter.modpouches.util.RandomUtils;
 
 import java.util.*;
 
@@ -91,11 +90,6 @@ public class ModPouches {
         for (Item item : GameData.getItemRegistry().typeSafeIterable()) {
             List list = new ArrayList();
             item.getSubItems(item, item.getCreativeTab(), list);
-
-            if (!list.isEmpty()) {
-                String mod = RandomUtils.getModForItem(item);
-                loadedModNames.add(mod);
-            }
         }
 
         for (String mod : ConfigHandler.modBlacklist) {
