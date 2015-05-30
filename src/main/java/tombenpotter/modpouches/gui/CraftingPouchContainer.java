@@ -98,7 +98,6 @@ public class CraftingPouchContainer extends Container {
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
-        super.onContainerClosed(player);
         pouchInventory.saveContents();
         player.inventory.setInventorySlotContents(player.inventory.currentItem, pouchInventory.pouchStack);
         if (!player.worldObj.isRemote) {
@@ -109,6 +108,7 @@ public class CraftingPouchContainer extends Container {
                 }
             }
         }
+        super.onContainerClosed(player);
     }
 
     @Override
