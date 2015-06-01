@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import tombenpotter.modpouches.gui.GuiHandler;
 import tombenpotter.modpouches.items.ItemModPouch;
+import tombenpotter.modpouches.network.PacketHandler;
 import tombenpotter.modpouches.proxies.CommonProxy;
 import tombenpotter.modpouches.util.ConfigHandler;
 import tombenpotter.modpouches.util.CopyNBTRecipe;
@@ -72,6 +73,8 @@ public class ModPouches {
         GameRegistry.addShapelessRecipe(new ItemStack(itemModPouch, 1, 1), new ItemStack(itemModPouch, 1, 1));
 
         GameRegistry.addRecipe(new CopyNBTRecipe(new ItemStack(itemModPouch, 1, 0), "LLL", "LPL", "LLL", 'L', Items.leather, 'P', new ItemStack(itemModPouch, 1, 1)));
+
+        PacketHandler.registerPackets();
 
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         FMLCommonHandler.instance().bus().register(new EventHandler());

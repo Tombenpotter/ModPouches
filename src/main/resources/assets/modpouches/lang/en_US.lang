@@ -2,3 +2,5 @@ item.ModPouches.mod.pouch.0.name=Pouch
 item.ModPouches.mod.pouch.1.name=Crafting Pouch
 itemGroup.tabModPouches=Mod Pouches
 text.ModPouches.pickup=Pickup Items
+text.ModPouches.refill=Refill Held Item
+text.ModPouches.abilities=Abilities

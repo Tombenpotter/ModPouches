@@ -21,6 +21,7 @@ public class RandomUtils {
     public static String MOD_TAG = "MP_Mod";
     public static String COLOR_TAG = "MP_Color";
     public static String PICKUP_TAG = "MP_Pickup";
+    public static String REFILL_TAG = "MP_Refill";
 
     public static int POUCH_GUI = 0;
     public static int POUCH_SLOTS = 54;

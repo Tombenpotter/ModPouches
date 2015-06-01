@@ -9,7 +9,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -60,6 +59,15 @@ public class ItemModPouch extends Item {
 
     public static boolean getPickupActivated(ItemStack stack) {
         return stack.hasTagCompound() && stack.stackTagCompound.getBoolean(RandomUtils.PICKUP_TAG);
+    }
+
+    public static void setRefillActivated(ItemStack stack, boolean isActivated) {
+        if (stack.hasTagCompound())
+            stack.stackTagCompound.setBoolean(RandomUtils.REFILL_TAG, isActivated);
+    }
+
+    public static boolean getRefillActivated(ItemStack stack) {
+        return stack.hasTagCompound() && stack.stackTagCompound.getBoolean(RandomUtils.REFILL_TAG);
     }
 
     @Override
@@ -114,13 +122,6 @@ public class ItemModPouch extends Item {
             stack.setTagCompound(new NBTTagCompound());
         }
 
-        if (player.isSneaking()) {
-            setPickupActivated(stack, !getPickupActivated(stack));
-            if (!world.isRemote)
-                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.ModPouches.pickup") + ": " + EnumChatFormatting.YELLOW + getPickupActivated(stack)));
-            return stack;
-        }
-
         if (stack.stackTagCompound.hasKey(RandomUtils.MOD_TAG)) {
             if (stack.getItemDamage() == 0)
                 player.openGui(ModPouches.instance, RandomUtils.POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -152,5 +153,6 @@ public class ItemModPouch extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
         list.add(StatCollector.translateToLocal("text.ModPouches.pickup") + ": " + EnumChatFormatting.YELLOW + getPickupActivated(stack));
+        list.add(StatCollector.translateToLocal("text.ModPouches.refill") + ": " + EnumChatFormatting.YELLOW + getRefillActivated(stack));
     }
 }
