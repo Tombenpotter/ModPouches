@@ -1,9 +1,10 @@
-package tombenpotter.modpouches.gui;
+package tombenpotter.modpouches.gui.pouch;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import tombenpotter.modpouches.gui.PouchInventory;
 
 public class PouchGui extends GuiContainer {
 

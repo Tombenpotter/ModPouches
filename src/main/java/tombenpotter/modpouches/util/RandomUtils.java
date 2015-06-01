@@ -6,10 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import tombenpotter.modpouches.ModPouches;
 import tombenpotter.modpouches.gui.PouchInventory;
 import tombenpotter.modpouches.items.ItemModPouch;
@@ -99,7 +101,7 @@ public class RandomUtils {
         for (int i = 0; i < pouchInventory.getSizeInventory(); i++) {
             if (pouchInventory.getStackInSlot(i) == null || (pouchInventory.getStackInSlot(i).getItem() == stack.getItem()) && pouchInventory.getStackInSlot(i).getItemDamage() == stack.getItemDamage()) {
                 if (isItemValidForPouch(stack, pouchStack)) {
-                    insertStackIntoInventory(stack, pouchInventory);
+                    insertStackIntoInventory(stack, pouchInventory, ForgeDirection.UNKNOWN);
                     pouchInventory.saveContents();
                 }
             }
@@ -107,24 +109,38 @@ public class RandomUtils {
         return stack.stackSize == 0;
     }
 
-    /**
-     * Adapted from the Blood Magic repository. https://github.com/WayofTime/BloodMagic/
-     * Licensed under the Creative Commons Attribution 4.0 International License
-     * This is a bit more copypasta than I had hoped. Will do some cleanup/reformatting/rewriting
-     * later.
-     *
-     * @param stack     - Stack to insert
-     * @param inventory - Inventory to insert to
-     * @return - Inserted ItemStack
-     */
-    public static ItemStack insertStackIntoInventory(ItemStack stack, IInventory inventory) {
+    public static void placePouchContentsInInventory(ItemStack pouchStack, IInventory inventory, EntityPlayer player, int side) {
+        int slotNumber = 0;
+        if (pouchStack.getItemDamage() == 0)
+            slotNumber = POUCH_SLOTS;
+        else if (pouchStack.getItemDamage() == 1)
+            slotNumber = CRAFTING_POUCH_SLOTS;
+
+        PouchInventory pouchInventory = new PouchInventory(slotNumber, player, pouchStack);
+        for (int i = 0; i < pouchInventory.getSizeInventory(); i++) {
+            if (pouchInventory.getStackInSlot(i) != null) {
+                ItemStack stack = pouchInventory.getStackInSlot(i);
+                insertStackIntoInventory(stack, inventory, ForgeDirection.getOrientation(side));
+            }
+        }
+        pouchInventory.saveContents();
+    }
+
+    public static ItemStack insertStackIntoInventory(ItemStack stack, IInventory inventory, ForgeDirection dir) {
         if (stack == null)
             return null;
 
         boolean[] canBeInserted = new boolean[inventory.getSizeInventory()];
 
-        for (int i = 0; i < canBeInserted.length; i++)
-            canBeInserted[i] = inventory.isItemValidForSlot(i, stack);
+        if (inventory instanceof ISidedInventory) {
+            int[] array = ((ISidedInventory) inventory).getAccessibleSlotsFromSide(dir.ordinal());
+            for (int in : array)
+                canBeInserted[in] = inventory.isItemValidForSlot(in, stack) && ((ISidedInventory) inventory).canInsertItem(in, stack, dir.ordinal());
+
+        } else {
+            for (int i = 0; i < canBeInserted.length; i++)
+                canBeInserted[i] = inventory.isItemValidForSlot(i, stack);
+        }
 
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             if (!canBeInserted[i])

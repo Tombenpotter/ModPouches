@@ -1,10 +1,11 @@
-package tombenpotter.modpouches.gui;
+package tombenpotter.modpouches.gui.craftingPouch;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tombenpotter.modpouches.ModPouches;
+import tombenpotter.modpouches.gui.PouchInventory;
 
 public class CraftingPouchGui extends GuiContainer {
 

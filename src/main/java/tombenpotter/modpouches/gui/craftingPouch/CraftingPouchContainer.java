@@ -1,10 +1,12 @@
-package tombenpotter.modpouches.gui;
+package tombenpotter.modpouches.gui.craftingPouch;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import tombenpotter.modpouches.gui.PouchInventory;
+import tombenpotter.modpouches.gui.PouchSlot;
 
 public class CraftingPouchContainer extends Container {
 

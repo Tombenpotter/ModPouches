@@ -4,6 +4,10 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import tombenpotter.modpouches.ModPouches;
+import tombenpotter.modpouches.gui.craftingPouch.CraftingPouchContainer;
+import tombenpotter.modpouches.gui.craftingPouch.CraftingPouchGui;
+import tombenpotter.modpouches.gui.pouch.PouchContainer;
+import tombenpotter.modpouches.gui.pouch.PouchGui;
 import tombenpotter.modpouches.util.RandomUtils;
 
 public class GuiHandler implements IGuiHandler {

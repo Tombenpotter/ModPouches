@@ -12,9 +12,9 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import tombenpotter.modpouches.ModPouches;
-import tombenpotter.modpouches.gui.CraftingPouchContainer;
-import tombenpotter.modpouches.gui.PouchContainer;
 import tombenpotter.modpouches.gui.PouchInventory;
+import tombenpotter.modpouches.gui.craftingPouch.CraftingPouchContainer;
+import tombenpotter.modpouches.gui.pouch.PouchContainer;
 import tombenpotter.modpouches.items.ItemModPouch;
 
 import java.awt.*;

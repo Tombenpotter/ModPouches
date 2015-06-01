@@ -4,7 +4,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.DefaultOverlayHandler;
 import tombenpotter.modpouches.ModPouches;
-import tombenpotter.modpouches.gui.CraftingPouchGui;
+import tombenpotter.modpouches.gui.craftingPouch.CraftingPouchGui;
 
 public class NEIConfig implements IConfigureNEI {
 

@@ -5,9 +5,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -114,6 +116,8 @@ public class ItemModPouch extends Item {
 
         if (player.isSneaking()) {
             setPickupActivated(stack, !getPickupActivated(stack));
+            if (!world.isRemote)
+                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.ModPouches.pickup") + ": " + EnumChatFormatting.YELLOW + getPickupActivated(stack)));
             return stack;
         }
 
@@ -126,6 +130,15 @@ public class ItemModPouch extends Item {
             return stack;
         }
         return stack;
+    }
+
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IInventory && player.getHeldItem() != null && player.getHeldItem().getItem() == ModPouches.itemModPouch) {
+            RandomUtils.placePouchContentsInInventory(player.getHeldItem(), (IInventory) world.getTileEntity(x, y, z), player, side);
+            return true;
+        }
+        return false;
     }
 
     @Override
