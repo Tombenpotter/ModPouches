@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,11 +26,13 @@ public class PacketTogglePickup implements IMessage, IMessageHandler<PacketToggl
 
     @Override
     public IMessage onMessage(PacketTogglePickup message, MessageContext ctx) {
-        ItemStack pouchStack = ctx.getServerHandler().playerEntity.getHeldItem();
+        EntityPlayer player = ctx.getServerHandler().playerEntity;
+        ItemStack pouchStack = player.getHeldItem();
         if (pouchStack != null) {
             ItemModPouch.setPickupActivated(pouchStack, !ItemModPouch.getPickupActivated(pouchStack));
-            ctx.getServerHandler().playerEntity.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.ModPouches.pickup")
+            player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.ModPouches.pickup")
                     + ": " + EnumChatFormatting.YELLOW + ItemModPouch.getPickupActivated(pouchStack)));
+            player.inventoryContainer.detectAndSendChanges();
         }
         return null;
     }

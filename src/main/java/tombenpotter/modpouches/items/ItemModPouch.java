@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import tombenpotter.modpouches.ModPouches;
+import tombenpotter.modpouches.gui.PouchInventory;
 import tombenpotter.modpouches.util.RandomUtils;
 
 import java.util.List;
@@ -127,9 +129,9 @@ public class ItemModPouch extends Item {
                 player.openGui(ModPouches.instance, RandomUtils.POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
             else if (stack.getItemDamage() == 1)
                 player.openGui(ModPouches.instance, RandomUtils.CRAFTING_POUCH_GUI, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-
             return stack;
         }
+
         return stack;
     }
 
@@ -140,6 +142,34 @@ public class ItemModPouch extends Item {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
+        if (getRefillActivated(stack)) {
+            EntityPlayer player = (EntityPlayer) entity;
+            
+            if (player.getHeldItem() != null) {
+                int slotNumber = 0;
+                if (stack.getItemDamage() == 0)
+                    slotNumber = RandomUtils.POUCH_SLOTS;
+                else if (stack.getItemDamage() == 1)
+                    slotNumber = RandomUtils.CRAFTING_POUCH_SLOTS;
+
+                PouchInventory pouchInventory = new PouchInventory(slotNumber, player, stack);
+
+                if (player.getHeldItem().stackSize < 64) {
+                    for (int i = 0; i < pouchInventory.getSizeInventory(); i++) {
+                        if (pouchInventory.getStackInSlot(i) != null && pouchInventory.getStackInSlot(i).isItemEqual(player.getHeldItem())) {
+                            pouchInventory.getStackInSlot(i).stackSize--;
+                            player.getHeldItem().stackSize++;
+                            pouchInventory.saveContents();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

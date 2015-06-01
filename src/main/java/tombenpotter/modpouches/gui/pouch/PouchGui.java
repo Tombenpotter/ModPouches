@@ -51,13 +51,13 @@ public class PouchGui extends GuiContainer {
         super.initGui();
         this.buttonList.clear();
 
-        buttonList.add(abilities = new GuiButton(0, guiLeft + 5 * xSize / 6, guiTop, StatCollector.translateToLocal("text.ModPouches.abilities")));
+        buttonList.add(abilities = new GuiButton(0, guiLeft + 4 * xSize / 6, guiTop, 42, 18, StatCollector.translateToLocal("text.ModPouches.abilities")));
     }
 
     @Override
     public void actionPerformed(GuiButton button) {
         if (button.id == 0) {
-            this.mc.displayGuiScreen(new PouchAbilitiesGui());
+            this.mc.displayGuiScreen(new PouchAbilitiesGui(pouchInventory.pouchStack));
         }
     }
 }

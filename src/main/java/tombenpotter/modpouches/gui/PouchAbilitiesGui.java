@@ -2,6 +2,7 @@ package tombenpotter.modpouches.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import tombenpotter.modpouches.network.PacketHandler;
 import tombenpotter.modpouches.network.PacketTogglePickup;
@@ -15,6 +16,12 @@ public class PouchAbilitiesGui extends GuiScreen {
     public GuiButton pickup;
     public GuiButton refill;
 
+    public ItemStack pouchStack;
+
+    public PouchAbilitiesGui(ItemStack pouchStack) {
+        this.pouchStack = pouchStack;
+    }
+
     @Override
     public void initGui() {
         super.initGui();
@@ -24,7 +31,7 @@ public class PouchAbilitiesGui extends GuiScreen {
         guiTop = (this.height - this.ySize) / 2;
 
         buttonList.add(pickup = new GuiButton(0, guiLeft, guiTop, StatCollector.translateToLocal("text.ModPouches.pickup")));
-        buttonList.add(refill = new GuiButton(1, guiLeft, 3 * guiTop / 4, StatCollector.translateToLocal("text.ModPouches.refill")));
+        buttonList.add(refill = new GuiButton(1, guiLeft, guiTop + ySize / 6, StatCollector.translateToLocal("text.ModPouches.refill")));
     }
 
     @Override
@@ -34,5 +41,10 @@ public class PouchAbilitiesGui extends GuiScreen {
         } else if (button.id == 1) {
             PacketHandler.INSTANCE.sendToServer(new PacketToggleRefill());
         }
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 }
